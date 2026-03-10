@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shadowban Explained</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;900&family=Syne:wght@800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+background: #0a0a0f;
+display: flex;
+align-items: center;
+justify-content: center;
+min-height: 100vh;
+font-family: ‘Space Grotesk’, sans-serif;
+overflow: hidden;
+}
+
+.card {
+width: 480px;
+background: #0f0f1a;
+border-radius: 28px;
+padding: 36px 32px;
+position: relative;
+border: 1px solid rgba(255,255,255,0.07);
+overflow: hidden;
+}
+
+/* Glow blobs */
+.blob1 {
+position: absolute;
+width: 300px; height: 300px;
+background: radial-gradient(circle, rgba(120,60,255,0.18) 0%, transparent 70%);
+top: -80px; right: -80px;
+border-radius: 50%;
+pointer-events: none;
+}
+.blob2 {
+position: absolute;
+width: 200px; height: 200px;
+background: radial-gradient(circle, rgba(255,60,120,0.12) 0%, transparent 70%);
+bottom: -40px; left: -40px;
+border-radius: 50%;
+pointer-events: none;
+}
+
+/* Header */
+.badge {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+background: rgba(120,60,255,0.15);
+border: 1px solid rgba(120,60,255,0.35);
+border-radius: 100px;
+padding: 5px 14px;
+font-size: 11px;
+font-weight: 700;
+color: #a084ff;
+letter-spacing: 0.08em;
+text-transform: uppercase;
+margin-bottom: 18px;
+}
+.badge .dot {
+width: 7px; height: 7px;
+background: #a084ff;
+border-radius: 50%;
+animation: pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse {
+0%, 100% { opacity: 1; transform: scale(1); }
+50% { opacity: 0.4; transform: scale(0.7); }
+}
+
+.title {
+font-family: ‘Syne’, sans-serif;
+font-size: 38px;
+font-weight: 900;
+line-height: 1.05;
+color: #fff;
+margin-bottom: 6px;
+}
+.title .ghost {
+color: transparent;
+-webkit-text-stroke: 1.5px rgba(255,255,255,0.25);
+}
+.title .highlight {
+background: linear-gradient(90deg, #a084ff, #ff6eb4);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+}
+
+.subtitle {
+font-size: 13.5px;
+color: rgba(255,255,255,0.45);
+margin-bottom: 26px;
+line-height: 1.5;
+}
+
+/* What is it section */
+.what-box {
+background: rgba(255,255,255,0.04);
+border: 1px solid rgba(255,255,255,0.08);
+border-radius: 16px;
+padding: 18px 20px;
+margin-bottom: 22px;
+}
+.what-box .label {
+font-size: 10px;
+font-weight: 700;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: rgba(255,255,255,0.3);
+margin-bottom: 8px;
+}
+.what-box p {
+font-size: 13.5px;
+color: rgba(255,255,255,0.75);
+line-height: 1.6;
+}
+.what-box p span {
+color: #ff6eb4;
+font-weight: 700;
+}
+
+/* Triggers */
+.section-title {
+font-size: 11px;
+font-weight: 700;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: rgba(255,255,255,0.3);
+margin-bottom: 12px;
+}
+
+.triggers {
+display: flex;
+flex-direction: column;
+gap: 9px;
+margin-bottom: 22px;
+}
+.trigger-row {
+display: flex;
+align-items: center;
+gap: 12px;
+background: rgba(255,80,100,0.07);
+border: 1px solid rgba(255,80,100,0.15);
+border-radius: 12px;
+padding: 11px 14px;
+}
+.trigger-icon {
+font-size: 18px;
+flex-shrink: 0;
+}
+.trigger-text {
+font-size: 12.5px;
+color: rgba(255,255,255,0.65);
+line-height: 1.45;
+}
+.trigger-text strong {
+color: #ff8fa0;
+font-weight: 700;
+display: block;
+font-size: 13px;
+}
+
+/* Fixes */
+.fixes {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 9px;
+margin-bottom: 24px;
+}
+.fix-card {
+background: rgba(100,255,180,0.05);
+border: 1px solid rgba(100,255,180,0.15);
+border-radius: 13px;
+padding: 14px 14px;
+position: relative;
+}
+.fix-card .fix-num {
+font-family: ‘Syne’, sans-serif;
+font-size: 28px;
+font-weight: 900;
+color: rgba(100,255,180,0.12);
+position: absolute;
+top: 8px; right: 12px;
+line-height: 1;
+}
+.fix-card .fix-emoji {
+font-size: 16px;
+margin-bottom: 6px;
+display: block;
+}
+.fix-card .fix-title {
+font-size: 12.5px;
+font-weight: 700;
+color: #7effc5;
+margin-bottom: 3px;
+}
+.fix-card .fix-desc {
+font-size: 11px;
+color: rgba(255,255,255,0.45);
+line-height: 1.4;
+}
+
+/* Bottom bar */
+.bottom-bar {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding-top: 20px;
+border-top: 1px solid rgba(255,255,255,0.06);
+}
+.tldr {
+font-size: 12px;
+color: rgba(255,255,255,0.35);
+}
+.tldr span {
+color: #a084ff;
+font-weight: 700;
+}
+.motto {
+font-family: ‘Syne’, sans-serif;
+font-size: 11px;
+font-weight: 800;
+color: rgba(255,255,255,0.2);
+letter-spacing: 0.05em;
+text-transform: uppercase;
+}
+
+/* Floating ghost */
+.ghost-float {
+position: absolute;
+top: 32px; right: 32px;
+font-size: 52px;
+opacity: 0.07;
+animation: float 3s ease-in-out infinite;
+pointer-events: none;
+}
+@keyframes float {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-8px); }
+}
+</style>
+
+</head>
+<body>
+<div class="card">
+  <div class="blob1"></div>
+  <div class="blob2"></div>
+  <div class="ghost-float">👻</div>
+
+  <div class="badge"><span class="dot"></span>TikTok Survival Guide</div>
+
+  <h1 class="title">
+    <span class="ghost">SHADOW</span><br>
+    <span class="highlight">BAN</span> 101
+  </h1>
+  <p class="subtitle">why your views suddenly dropped to 12 💀</p>
+
+  <div class="what-box">
+    <div class="label">what it actually is</div>
+    <p>TikTok's algo quietly <span>stops pushing your content</span> on the FYP when it thinks you're posting the same thing on repeat. not a real ban — just the algorithm going <span>"ok this again…"</span> and moving on.</p>
+  </div>
+
+  <div class="section-title">🚨 what triggers it</div>
+  <div class="triggers">
+    <div class="trigger-row">
+      <span class="trigger-icon">♻️</span>
+      <div class="trigger-text">
+        <strong>Same structure every time</strong>
+        same hook format, same slide order, same pacing = reused content signal
+      </div>
+    </div>
+    <div class="trigger-row">
+      <span class="trigger-icon">📋</span>
+      <div class="trigger-text">
+        <strong>Copy-paste text overlays</strong>
+        swapping pics but keeping the same words? algo still clocks it
+      </div>
+    </div>
+    <div class="trigger-row">
+      <span class="trigger-icon">🤖</span>
+      <div class="trigger-text">
+        <strong>Low originality score</strong>
+        5 videos that look like 1 video = "spammy behavior" flag
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">✅ how to stay safe</div>
+  <div class="fixes">
+    <div class="fix-card">
+      <span class="fix-num">01</span>
+      <span class="fix-emoji">🪝</span>
+      <div class="fix-title">Switch the hook</div>
+      <div class="fix-desc">new angle, new opening line every time</div>
+    </div>
+    <div class="fix-card">
+      <span class="fix-num">02</span>
+      <span class="fix-emoji">🔀</span>
+      <div class="fix-title">Reorder slides</div>
+      <div class="fix-desc">mix up the structure so the flow feels fresh</div>
+    </div>
+    <div class="fix-card">
+      <span class="fix-num">03</span>
+      <span class="fix-emoji">✍️</span>
+      <div class="fix-title">Rewrite the text</div>
+      <div class="fix-desc">same idea, different words — always</div>
+    </div>
+    <div class="fix-card">
+      <span class="fix-num">04</span>
+      <span class="fix-emoji">🎯</span>
+      <div class="fix-title">New angle</div>
+      <div class="fix-desc">add a twist, a plot, a different pov</div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <div class="tldr"><span>TL;DR</span> — keep it fresh or stay invisible</div>
+    <div class="motto">no originality = no FYP</div>
+  </div>
+</div>
+</body>
+</html>
