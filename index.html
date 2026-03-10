@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shadow Ban 101 — Zagged</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --periwinkle: #8B8BF5;
+      --periwinkle-light: #A5A5F7;
+      --cream: #FAF5EE;
+      --cream-card: #F5EDE0;
+      --white: #FFFFFF;
+      --black: #1A1A1A;
+      --border: #1A1A1A;
+      --text-secondary: #6B6560;
+      --peach: #F5C5B0;
+      --pink: #F2A4D0;
+      --pink-soft: #FDEEF7;
+      --lime: #C5E04B;
+      --lime-soft: #F0F7D0;
+      --yellow: #F5D76E;
+      --yellow-soft: #FFF8E0;
+      --red: #D94130;
+      --red-soft: #FDEEEC;
+      --green: #2D8C5A;
+      --green-soft: #E8F7EF;
+      --orange: #F5A623;
+      --orange-soft: #FFF3E0;
+      --radius-lg: 28px;
+      --radius-md: 20px;
+      --radius-sm: 14px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--black);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    .nav {
+      padding: 20px 32px;
+      display: flex;
+      justify-content: center;
+      position: sticky;
+      top: 12px;
+      z-index: 100;
+    }
+
+    .nav-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 28px;
+      background: var(--cream);
+      border: 2px solid var(--border);
+      border-radius: 60px;
+      padding: 14px 36px;
+    }
+
+    .nav-logo {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      font-size: 26px;
+      letter-spacing: -0.03em;
+    }
+
+    .nav-link {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--black);
+      display: none;
+    }
+
+    .nav-cta {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      font-size: 16px;
+      text-decoration: none;
+      color: var(--black);
+      margin-left: auto;
+    }
+
+    @media (min-width: 768px) { .nav-link { display: block; } }
+
+    /* HERO */
+    .hero {
+      background: var(--black);
+      margin: 0 16px;
+      border-radius: var(--radius-lg);
+      padding: 72px 40px 64px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(ellipse at 30% 20%, rgba(139,139,245,0.15) 0%, transparent 60%),
+                  radial-gradient(ellipse at 70% 80%, rgba(245,166,35,0.1) 0%, transparent 50%);
+    }
+
+    .hero-content { position: relative; z-index: 1; }
+
+    .hero-tag {
+      display: inline-block;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--white);
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 40px;
+      padding: 8px 20px;
+      margin-bottom: 28px;
+      backdrop-filter: blur(4px);
+    }
+
+    h1 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      font-size: clamp(44px, 8vw, 88px);
+      line-height: 0.92;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .hero-emoji {
+      font-size: clamp(36px, 6vw, 64px);
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      color: rgba(255,255,255,0.55);
+      max-width: 420px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .hero-sub em {
+      color: rgba(255,255,255,0.8);
+      font-style: normal;
+    }
+
+    /* SECTION TITLES */
+    .section-heading {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      font-size: clamp(32px, 5vw, 52px);
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      padding: 56px 32px 12px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-sub {
+      font-size: 16px;
+      color: var(--text-secondary);
+      padding: 0 32px 32px;
+      max-width: 1100px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* EXPLAINER CARD */
+    .explainer {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 16px 16px;
+    }
+
+    .explainer-card {
+      background: var(--cream-card);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px 32px;
+      animation: fadeUp 0.6s ease both;
+      animation-delay: 0.08s;
+    }
+
+    .explainer-label {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--periwinkle);
+      margin-bottom: 12px;
+    }
+
+    .explainer-text {
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--black);
+      max-width: 680px;
+    }
+
+    .explainer-text strong {
+      font-weight: 700;
+    }
+
+    /* TRIGGER CARDS */
+    .triggers-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 16px 32px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .trigger-card {
+      background: var(--cream-card);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 26px 28px;
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .trigger-card:nth-child(1) { animation-delay: 0.1s; }
+    .trigger-card:nth-child(2) { animation-delay: 0.16s; }
+    .trigger-card:nth-child(3) { animation-delay: 0.22s; }
+
+    .trigger-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    }
+
+    .trigger-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .trigger-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      font-size: 17px;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .trigger-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    .trigger-badge {
+      display: inline-block;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 8px;
+      margin-top: 14px;
+    }
+
+    .trigger-card:nth-child(1) .trigger-badge { background: var(--red-soft); color: var(--red); }
+    .trigger-card:nth-child(2) .trigger-badge { background: var(--orange-soft); color: var(--orange); }
+    .trigger-card:nth-child(3) .trigger-badge { background: var(--red-soft); color: var(--red); }
+
+    /* FIX CARDS */
+    .fixes-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 16px 32px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .fix-card {
+      background: var(--cream-card);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px 28px;
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .fix-card:nth-child(1) { animation-delay: 0.1s; }
+    .fix-card:nth-child(2) { animation-delay: 0.15s; }
+    .fix-card:nth-child(3) { animation-delay: 0.20s; }
+    .fix-card:nth-child(4) { animation-delay: 0.25s; }
+
+    .fix-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    }
+
+    .fix-num {
+      position: absolute;
+      top: -15px;
+      left: 24px;
+      width: 32px;
+      height: 32px;
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .fix-icon {
+      font-size: 32px;
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .fix-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+
+    .fix-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    .fix-badge {
+      display: inline-block;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 8px;
+      margin-top: 14px;
+      background: var(--green-soft);
+      color: var(--green);
+    }
+
+    /* TLDR BANNER */
+    .tldr {
+      background: var(--periwinkle);
+      border-radius: var(--radius-lg);
+      max-width: 1100px;
+      margin: 8px 16px 0;
+      padding: 56px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      animation: fadeUp 0.7s ease both;
+      animation-delay: 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (min-width: 1132px) { .tldr { margin: 8px auto 0; } }
+
+    .tldr::before {
+      content: '';
+      position: absolute;
+      top: -50px; right: -50px;
+      width: 180px; height: 180px;
+      background: var(--periwinkle-light);
+      border-radius: 50%;
+      opacity: 0.4;
+    }
+
+    .tldr-content { position: relative; z-index: 1; }
+
+    .tldr-label {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 12px;
+    }
+
+    .tldr h2 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      font-size: clamp(28px, 4.5vw, 48px);
+      text-transform: uppercase;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .tldr p {
+      font-size: 16px;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.5;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tldr-cta {
+      display: inline-block;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      font-size: 15px;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--black);
+      background: var(--white);
+      border-radius: 60px;
+      padding: 16px 36px;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tldr-cta:hover { transform: scale(1.04); }
+
+    /* FOOTER */
+    .footer {
+      text-align: center;
+      padding: 56px 32px 64px;
+    }
+
+    .footer-text {
+      font-family: 'Outfit', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+    .footer-text strong { color: var(--black); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .hero { padding: 56px 24px 48px; margin: 0 12px; }
+      h1 { font-size: 48px; }
+      .section-heading { padding: 40px 20px 10px; }
+      .section-sub { padding: 0 20px 24px; }
+      .explainer { padding: 0 12px 12px; }
+      .triggers-grid { grid-template-columns: 1fr; padding: 0 12px 24px; }
+      .fixes-grid { grid-template-columns: 1fr 1fr; padding: 0 12px 24px; }
+      .tldr {
+        flex-direction: column;
+        text-align: center;
+        padding: 40px 28px;
+        margin-left: 12px;
+        margin-right: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .fixes-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-pill">
+      <div class="nav-logo">zagged</div>
+      <a href="#" class="nav-link">TikTok Survival Guide</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-tag">TikTok Survival Guide</div>
+      <span class="hero-emoji">💀</span>
+      <h1>Shadow<br>Ban 101</h1>
+      <p class="hero-sub">why your views suddenly dropped to <em>12</em></p>
+    </div>
+  </section>
+
+  <!-- WHAT IT IS -->
+  <div class="explainer" style="padding-top: 48px;">
+    <div class="explainer-card">
+      <div class="explainer-label">What It Actually Is</div>
+      <p class="explainer-text">TikTok's algo quietly stops pushing your content on the FYP when it thinks you're posting the same thing on repeat. <strong>Not a real ban</strong> — just the algorithm going "ok this again..." and moving on.</p>
+    </div>
+  </div>
+
+  <!-- TRIGGERS -->
+  <h2 class="section-heading">🚨 What Triggers It</h2>
+  <p class="section-sub">These are the behaviors TikTok's algorithm flags as low-originality.</p>
+
+  <div class="triggers-grid">
+    <article class="trigger-card">
+      <span class="trigger-icon">♻️</span>
+      <h3 class="trigger-title">Same Structure<br>Every Time</h3>
+      <p class="trigger-text">Same hook format, same slide order, same pacing = reused content signal.</p>
+      <span class="trigger-badge">High Risk</span>
+    </article>
+
+    <article class="trigger-card">
+      <span class="trigger-icon">📋</span>
+      <h3 class="trigger-title">Copy-Paste<br>Text Overlays</h3>
+      <p class="trigger-text">Swapping pics but keeping the same words? Algo still clocks it.</p>
+      <span class="trigger-badge">Medium Risk</span>
+    </article>
+
+    <article class="trigger-card">
+      <span class="trigger-icon">🤖</span>
+      <h3 class="trigger-title">Low Originality<br>Score</h3>
+      <p class="trigger-text">5 videos that look like 1 video = "spammy behavior" flag.</p>
+      <span class="trigger-badge">High Risk</span>
+    </article>
+  </div>
+
+  <!-- FIXES -->
+  <h2 class="section-heading">✅ How to Stay Safe</h2>
+  <p class="section-sub">Four simple moves to keep your content fresh and your reach alive.</p>
+
+  <div class="fixes-grid">
+    <article class="fix-card">
+      <div class="fix-num">01</div>
+      <span class="fix-icon">🪝</span>
+      <h3 class="fix-title">Switch<br>the Hook</h3>
+      <p class="fix-text">New angle, new opening line every time.</p>
+      <span class="fix-badge">Do This</span>
+    </article>
+
+    <article class="fix-card">
+      <div class="fix-num">02</div>
+      <span class="fix-icon">🔀</span>
+      <h3 class="fix-title">Reorder<br>Slides</h3>
+      <p class="fix-text">Mix up the structure so the flow feels fresh.</p>
+      <span class="fix-badge">Do This</span>
+    </article>
+
+    <article class="fix-card">
+      <div class="fix-num">03</div>
+      <span class="fix-icon">✍️</span>
+      <h3 class="fix-title">Rewrite<br>the Text</h3>
+      <p class="fix-text">Same idea, different words — always.</p>
+      <span class="fix-badge">Do This</span>
+    </article>
+
+    <article class="fix-card">
+      <div class="fix-num">04</div>
+      <span class="fix-icon">🎯</span>
+      <h3 class="fix-title">New<br>Angle</h3>
+      <p class="fix-text">Add a twist, a plot, a different POV.</p>
+      <span class="fix-badge">Do This</span>
+    </article>
+  </div>
+
+  <!-- TLDR -->
+  <section class="tldr">
+    <div class="tldr-content">
+      <div class="tldr-label">TL;DR</div>
+      <h2>Keep It Fresh<br>or Stay Invisible</h2>
+      <p>No originality = no FYP. It's that simple.</p>
+    </div>
+    <a href="#" class="tldr-cta">Let's Talk</a>
+  </section>
+
+  <footer class="footer">
+    <p class="footer-text">Made by <strong>zagged</strong></p>
+  </footer>
+
+</body>
+</html>
